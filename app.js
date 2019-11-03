@@ -53,25 +53,15 @@ app.post('/api/stuff', (req, res, next)=>{
 });
 
 app.use('/api/stuff', (req, res, next) => {
-    const stuff = [
-        {
-            _id: 'qweweft',
-            title: 'My first stuff',
-            description: 'Information about my first stuff',
-            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e3/Canon_EOS_60D_01.jpg',
-            price: 4900,
-            userId: 'werfn2345rnjg',
-        },
-        {
-            _id: 'qweweftasdq21',
-            title: 'My second stuff',
-            description: 'Information about my second stuff',
-            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e3/Canon_EOS_60D_01.jpg',
-            price: 6000,
-            userId: 'werfn2345rnjg',
-        }
-    ];
-    res.status(200).json(stuff);
+    Thing.find()
+        .then((things) => {
+            res.status(200).json(things)
+        })
+        .catch(error => {
+            res.status(400).json({
+                error: error
+            })
+        });
 });
 
 module.exports = app;
