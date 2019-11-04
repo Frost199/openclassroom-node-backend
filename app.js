@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 //Create New thing
-app.post('/api/stuff', (req, res, next)=>{
+app.post('/api/stuff', (req, res, next) => {
     const thing = new Thing({
         title: req.body.title,
         description: req.body.description,
@@ -42,7 +42,7 @@ app.post('/api/stuff', (req, res, next)=>{
     thing.save()
         .then(() => {
             res.status(201).json({
-               message: "Post saved successfully"
+                message: "Post saved successfully"
             });
         })
         .catch(error => {
@@ -55,15 +55,39 @@ app.post('/api/stuff', (req, res, next)=>{
 //view all about a particular thing
 app.get('/api/stuff/:id', (req, res, next) => {
     Thing.findOne({
-       _id: req.params.id
+        _id: req.params.id
     }).then((thing) => {
         res.status(200).json(thing)
-    }).catch(error =>{
+    }).catch(error => {
         res.status(404).json({
             error: error
         })
     });
 });
+
+//Update a particular thing
+app.put('/api/stuff/:id', (req, res, next) => {
+    const thing = new Thing({
+        _id: req.params.id,
+        title: req.body.title,
+        description: req.body.description,
+        imageUrl: req.body.imageUrl,
+        price: req.body.price,
+        userId: req.body.userId
+    });
+    Thing.updateOne({_id: req.params.id}, thing)
+        .then(() => {
+            res.status(201).json({
+                message: 'Thing updated successfully'
+            });
+        })
+        .catch(error => {
+            res.status(400).json({
+               error: error
+            });
+        });
+});
+
 
 //View all things
 app.use('/api/stuff', (req, res, next) => {
