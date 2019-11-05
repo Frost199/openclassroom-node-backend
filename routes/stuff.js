@@ -1,20 +1,21 @@
 const express = require('express');
 const stuffController  = require('../controller/stuff');
+const auth = require('../middleware/auth');
 const router = express.Router();
 
 //Create New thing
-router.post('/', stuffController.createThing);
+router.post('/', auth, stuffController.createThing);
 
 //view all about a particular thing
-router.get('/:id', stuffController.getOneThing);
+router.get('/:id', auth, stuffController.getOneThing);
 
 //Update a particular thing
-router.put('/:id', stuffController.modifyThing);
+router.put('/:id', auth, stuffController.modifyThing);
 
 //delete a particular thing
-router.delete('/:id', stuffController.deleteThing);
+router.delete('/:id', auth, stuffController.deleteThing);
 
 //View all things
-router.get('/', stuffController.getAllStuff);
+router.get('/', auth, stuffController.getAllStuff);
 
 module.exports = router;
